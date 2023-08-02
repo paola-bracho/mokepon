@@ -1,3 +1,6 @@
+let ataqueJugador
+let ataqueEnemigo
+
 //funcion de seleccionar mascota
 function seleccionarMascotaJugador() {
 
@@ -39,34 +42,78 @@ function seleccionarMascotaJugador() {
 //Funcion de seleccionar mascota del enemigo
 function seleccionarMascotaEnemigo() {
 
-    let ataqueAleatorio = aleatorio()
+    let mascotaAleatorio = aleatorio(1, 6)
     let spanMascotaEnemigo = document.getElementById("mascota-enemigo")
 
-    if (ataqueAleatorio == 1) {
+    if (mascotaAleatorio == 1) {
         spanMascotaEnemigo.innerHTML = "Hipodoge"
-    } else if (ataqueAleatorio == 2){
+    } else if (mascotaAleatorio == 2){
         spanMascotaEnemigo.innerHTML = "Capipepo"
-    } else if (ataqueAleatorio == 3){
+    } else if (mascotaAleatorio == 3){
         spanMascotaEnemigo.innerHTML = "Ratigueya"
-    } else if (ataqueAleatorio == 4){
+    } else if (mascotaAleatorio == 4){
         spanMascotaEnemigo.innerHTML = "Langostelvis"
-    } else if (ataqueAleatorio == 5){
+    } else if (mascotaAleatorio == 5){
         spanMascotaEnemigo.innerHTML = "Tucapalma"
-    } else if (ataqueAleatorio == 6){
+    } else if (mascotaAleatorio == 6){
         spanMascotaEnemigo.innerHTML = "Pydos"
     }
 }
 
 //Funcion numero aleatorio
-function aleatorio(){
-    return Math.ceil(Math.random()*6)
+function aleatorio(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
-//Evento click del boton seleccionar mascota
-let botonMascotaJugador = document.getElementById("boton-mascota")
-botonMascotaJugador.addEventListener("click", seleccionarMascotaJugador)
+//funcion de eleccion de ataques del jugador
+function ataqueFuego() {
+    ataqueJugador = "FUEGO"
+    ataqueAleatorioEnemigo()
+}
+function ataqueAgua() {
+    ataqueJugador = "AGUA"
+    ataqueAleatorioEnemigo()
+}
+function ataqueTierra() {
+    ataqueJugador = "TIERRA"
+    ataqueAleatorioEnemigo()
+}
+
+//Se crea la funcion aleatoria para que PC elija su ataque
+function ataqueAleatorioEnemigo(){
+    let ataqueAleatorio = aleatorio(1, 3)
+
+    if (ataqueAleatorio == 1) {
+        ataqueEnemigo = "FUEGO"
+    } else if (ataqueAleatorio == 2) {
+        ataqueEnemigo = "AGUA"
+    } else if (ataqueAleatorio == 3){
+        ataqueEnemigo = "TIERRA"
+    }
+    crearMensaje()
+}
+
+function crearMensaje() {
+    let sectionMensajes = document.getElementById("mensajes")
+    
+    let parrafo = document.createElement("p")
+    parrafo.innerHTML = "Tu mascota atacó con " + ataqueJugador + ", la mascota del enemigo atacó con " + ataqueEnemigo + "- PENDIENTE"
+
+    sectionMensajes.appendChild(parrafo)
+}
 
 
+    //Evento click del boton seleccionar mascota
+    let botonMascotaJugador = document.getElementById("boton-mascota")
+    botonMascotaJugador.addEventListener("click", seleccionarMascotaJugador)
+
+    // Evento click del los botones para seleccionar elemento
+    let botonFuego = document.getElementById("boton-fuego")
+    botonFuego.addEventListener("click", ataqueFuego)
+    let botonAgua = document.getElementById("boton-agua")
+    botonAgua.addEventListener("click", ataqueAgua)
+    let botonTierra = document.getElementById("boton-tierra")
+    botonTierra.addEventListener("click", ataqueTierra)
 
 
 
