@@ -1,5 +1,7 @@
 let ataqueJugador
 let ataqueEnemigo
+let vidasJugador = 3
+let vidasEnemigo = 3
 
 //funcion de seleccionar mascota
 function seleccionarMascotaJugador() {
@@ -17,17 +19,17 @@ function seleccionarMascotaJugador() {
     //Comprueba Seleccion y Cambia el DOM con la mascota selecionada
     if (inputHipodoge.checked) {
         spanMascotaJugador.innerHTML = "Hipodoge";
-    } else if (inputCapipepo.checked){
+    } else if (inputCapipepo.checked) {
         spanMascotaJugador.innerHTML = "Capipepo";
-    } else if (inputRatigueya.checked){
+    } else if (inputRatigueya.checked) {
         spanMascotaJugador.innerHTML = "Ratigueya";
-    } else if (inputLangostelvis.checked){
+    } else if (inputLangostelvis.checked) {
         spanMascotaJugador.innerHTML = "Langostelvis";
-    } else if (inputTucapalma.checked){
+    } else if (inputTucapalma.checked) {
         spanMascotaJugador.innerHTML = "Tucapalma";
-    } else if (inputPydos.checked){
+    } else if (inputPydos.checked) {
         spanMascotaJugador.innerHTML = "Pydos";
-    } else{
+    } else {
         alert("Selecciona tu mascota");
         jugar = 0
     }
@@ -47,15 +49,15 @@ function seleccionarMascotaEnemigo() {
 
     if (mascotaAleatorio == 1) {
         spanMascotaEnemigo.innerHTML = "Hipodoge"
-    } else if (mascotaAleatorio == 2){
+    } else if (mascotaAleatorio == 2) {
         spanMascotaEnemigo.innerHTML = "Capipepo"
-    } else if (mascotaAleatorio == 3){
+    } else if (mascotaAleatorio == 3) {
         spanMascotaEnemigo.innerHTML = "Ratigueya"
-    } else if (mascotaAleatorio == 4){
+    } else if (mascotaAleatorio == 4) {
         spanMascotaEnemigo.innerHTML = "Langostelvis"
-    } else if (mascotaAleatorio == 5){
+    } else if (mascotaAleatorio == 5) {
         spanMascotaEnemigo.innerHTML = "Tucapalma"
-    } else if (mascotaAleatorio == 6){
+    } else if (mascotaAleatorio == 6) {
         spanMascotaEnemigo.innerHTML = "Pydos"
     }
 }
@@ -80,40 +82,75 @@ function ataqueTierra() {
 }
 
 //Se crea la funcion aleatoria para que PC elija su ataque
-function ataqueAleatorioEnemigo(){
+function ataqueAleatorioEnemigo() {
     let ataqueAleatorio = aleatorio(1, 3)
 
     if (ataqueAleatorio == 1) {
         ataqueEnemigo = "FUEGO"
     } else if (ataqueAleatorio == 2) {
         ataqueEnemigo = "AGUA"
-    } else if (ataqueAleatorio == 3){
+    } else if (ataqueAleatorio == 3) {
         ataqueEnemigo = "TIERRA"
     }
-    crearMensaje()
+    combate()
 }
 
-function crearMensaje() {
+function combate() {
+    let spanVidasJugador = document.getElementById("vidas-jugador")
+    let spanVidasEnemigo = document.getElementById("vidas-enemigo")
+
+    if (ataqueEnemigo == ataqueJugador) {
+        crearMensaje("EMPATE")
+    } else if (ataqueJugador == "AGUA" && ataqueEnemigo == "FUEGO" || ataqueJugador == "FUEGO" && ataqueEnemigo == "TIERRA" || ataqueJugador == "TIERRA" && ataqueEnemigo == "AGUA") {
+        crearMensaje("GANASTE")
+        vidasEnemigo--
+        spanVidasEnemigo.innerHTML = vidasEnemigo
+    } else {
+        crearMensaje("PERDISTE")
+        vidasJugador--
+        spanVidasJugador.innerHTML = vidasJugador
+    }
+    revisarVidas()
+}
+
+function revisarVidas() {
+    if (vidasEnemigo == 0) {
+        crearMensajeFinal("FELICITACIONES! Ganaste 🎉")
+    } else if (vidasJugador == 0) {
+        crearMensajeFinal("Noooo, perdisteee 😞")
+    }
+}
+
+function crearMensaje(resultado) {
+    let sectionMensajes = document.getElementById("mensajes")
+
+    let parrafo = document.createElement("p")
+    parrafo.innerHTML = "Tu mascota atacó con " + ataqueJugador + ", la mascota del enemigo atacó con " + ataqueEnemigo + "- " + resultado
+
+    sectionMensajes.appendChild(parrafo)
+}
+
+function crearMensajeFinal(resultadoFinal) {
     let sectionMensajes = document.getElementById("mensajes")
     
     let parrafo = document.createElement("p")
-    parrafo.innerHTML = "Tu mascota atacó con " + ataqueJugador + ", la mascota del enemigo atacó con " + ataqueEnemigo + "- PENDIENTE"
+    parrafo.innerHTML = resultadoFinal
 
     sectionMensajes.appendChild(parrafo)
 }
 
 
-    //Evento click del boton seleccionar mascota
-    let botonMascotaJugador = document.getElementById("boton-mascota")
-    botonMascotaJugador.addEventListener("click", seleccionarMascotaJugador)
+//Evento click del boton seleccionar mascota
+let botonMascotaJugador = document.getElementById("boton-mascota")
+botonMascotaJugador.addEventListener("click", seleccionarMascotaJugador)
 
-    // Evento click del los botones para seleccionar elemento
-    let botonFuego = document.getElementById("boton-fuego")
-    botonFuego.addEventListener("click", ataqueFuego)
-    let botonAgua = document.getElementById("boton-agua")
-    botonAgua.addEventListener("click", ataqueAgua)
-    let botonTierra = document.getElementById("boton-tierra")
-    botonTierra.addEventListener("click", ataqueTierra)
+// Evento click del los botones para seleccionar elemento
+let botonFuego = document.getElementById("boton-fuego")
+botonFuego.addEventListener("click", ataqueFuego)
+let botonAgua = document.getElementById("boton-agua")
+botonAgua.addEventListener("click", ataqueAgua)
+let botonTierra = document.getElementById("boton-tierra")
+botonTierra.addEventListener("click", ataqueTierra)
 
 
 
