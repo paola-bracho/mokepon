@@ -16,7 +16,7 @@ function seleccionarMascotaJugador() {
     let inputPydos = document.getElementById("pydos")
     let spanMascotaJugador = document.getElementById("mascota-jugador")
 
-    //Comprueba Seleccion y Cambia el DOM con la mascota selecionada
+    //Comprueba la seleccion y cambia el DOM con la mascota selecionada
     if (inputHipodoge.checked) {
         spanMascotaJugador.innerHTML = "Hipodoge";
     } else if (inputCapipepo.checked) {
@@ -31,7 +31,7 @@ function seleccionarMascotaJugador() {
         spanMascotaJugador.innerHTML = "Pydos";
     } else {
         alert("Selecciona tu mascota");
-        jugar = 0
+        jugar = 0 //La pc no hara seleccion de mascota hasta que el jugador lo haga
     }
 
     /*Esta condicion solo se cumple si el jugador selecciono una mascota, si es asi
@@ -39,6 +39,8 @@ function seleccionarMascotaJugador() {
     if (jugar == 1) {
         seleccionarMascotaEnemigo()
     }
+    //Se aplico disabled para que cuando el jugador seleccione una mascota, no le de opción de seguir cambiando
+    botonMascotaJugador.disabled = true 
 }
 
 //Funcion de seleccionar mascota del enemigo
@@ -62,7 +64,7 @@ function seleccionarMascotaEnemigo() {
     }
 }
 
-//Funcion numero aleatorio
+//Funcion numero aleatorio para seleccion de mascota y ataque del pc
 function aleatorio(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min)
 }
@@ -95,6 +97,7 @@ function ataqueAleatorioEnemigo() {
     combate()
 }
 
+//se crea la logica para obtener el resultado del combate, restando las vidas de los participantes segun corresponda
 function combate() {
     let spanVidasJugador = document.getElementById("vidas-jugador")
     let spanVidasEnemigo = document.getElementById("vidas-enemigo")
@@ -110,9 +113,11 @@ function combate() {
         vidasJugador--
         spanVidasJugador.innerHTML = vidasJugador
     }
-    revisarVidas()
+    //cuando el combate termina se llama la funcion revisarVidas que muestra el mensaje final de victoria o derrota
+    revisarVidas() 
 }
 
+//una vez que la vida del jugador o del pc llega a 0 se muestra un mensaje con el resultado final del combate
 function revisarVidas() {
     if (vidasEnemigo == 0) {
         crearMensajeFinal("FELICITACIONES! Ganaste 🎉")
@@ -121,6 +126,7 @@ function revisarVidas() {
     }
 }
 
+//Una vez que se tiene el ataque del jugador y el enemigo se muestra un mensaje con el resultado de si gano o no
 function crearMensaje(resultado) {
     let sectionMensajes = document.getElementById("mensajes")
 
@@ -130,6 +136,7 @@ function crearMensaje(resultado) {
     sectionMensajes.appendChild(parrafo)
 }
 
+//funcion que muestra el resultado final del combate en pantalla 
 function crearMensajeFinal(resultadoFinal) {
     let sectionMensajes = document.getElementById("mensajes")
     
@@ -137,6 +144,21 @@ function crearMensajeFinal(resultadoFinal) {
     parrafo.innerHTML = resultadoFinal
 
     sectionMensajes.appendChild(parrafo)
+
+    /*Una vez que las vidas del jugador o del pc lleguen a 0, 
+    se desabilitan con disabled los botones de ataques para poner fin al juego*/
+    let botonFuego = document.getElementById("boton-fuego")
+    botonFuego.disabled = true
+    let botonAgua = document.getElementById("boton-agua")
+    botonAgua.disabled = true
+    let botonTierra = document.getElementById("boton-tierra")
+    botonTierra.disabled = true
+}
+
+/*Se uso el metodo location.reload para recargar la pagina para volver al html inicial 
+y volver a selecionar las mascotas y ataques cuando se pulse el boton reiniciar*/
+function reiniciarJuego() {
+    location.reload()
 }
 
 
@@ -152,6 +174,9 @@ botonAgua.addEventListener("click", ataqueAgua)
 let botonTierra = document.getElementById("boton-tierra")
 botonTierra.addEventListener("click", ataqueTierra)
 
+//Evento click del boton reiniciar
+let botonReiniciar = document.getElementById("boton-reiniciar")
+botonReiniciar.addEventListener("click", reiniciarJuego)
 
 
 
