@@ -1,30 +1,50 @@
+let sectionSeleccionarAtaque = document.getElementById("seleccionar-ataque")
+let sectionReiniciar = document.getElementById("reiniciar")
+let botonMascotaJugador = document.getElementById("boton-mascota")
+
+let botonFuego = document.getElementById("boton-fuego")
+let botonAgua = document.getElementById("boton-agua")
+let botonTierra = document.getElementById("boton-tierra")
+let botonReiniciar = document.getElementById("boton-reiniciar")
+
+let sectionSeleccionarMascota = document.getElementById("seleccionar-mascota")
+let inputHipodoge = document.getElementById("hipodoge")
+let inputCapipepo = document.getElementById("capipepo")
+let inputRatigueya = document.getElementById("ratigueya")
+let inputLangostelvis = document.getElementById("langostelvis")
+let inputTucapalma = document.getElementById("tucapalma")
+let inputPydos = document.getElementById("pydos")
+let spanMascotaJugador = document.getElementById("mascota-jugador")
+
+let spanMascotaEnemigo = document.getElementById("mascota-enemigo")
+
+let spanVidasJugador = document.getElementById("vidas-jugador")
+let spanVidasEnemigo = document.getElementById("vidas-enemigo")
+
+let sectionMensajes = document.getElementById('resultado')
+let ataquesDelJugador = document.getElementById('ataques-del-jugador')
+let ataquesDelEnemigo = document.getElementById('ataques-del-enemigo')
+
 let ataqueJugador
 let ataqueEnemigo
 let vidasJugador = 3
 let vidasEnemigo = 3
 
 //Se uso display none para ocultar la seleccion de ataques hasta que se seleccione la mascota
-let sectionSeleccionarAtaque = document.getElementById("seleccionar-ataque")
 sectionSeleccionarAtaque.style.display = "none"
 
 //Se oculta el boton de reiniciar hasta que termine el juego
-let sectionReiniciar = document.getElementById("reiniciar")
 sectionReiniciar.style.display = "none"
 
 //Evento click del boton seleccionar mascota
-let botonMascotaJugador = document.getElementById("boton-mascota")
 botonMascotaJugador.addEventListener("click", seleccionarMascotaJugador)
 
 // Evento click del los botones para seleccionar elemento
-let botonFuego = document.getElementById("boton-fuego")
 botonFuego.addEventListener("click", ataqueFuego)
-let botonAgua = document.getElementById("boton-agua")
 botonAgua.addEventListener("click", ataqueAgua)
-let botonTierra = document.getElementById("boton-tierra")
 botonTierra.addEventListener("click", ataqueTierra)
 
 //Evento click del boton reiniciar
-let botonReiniciar = document.getElementById("boton-reiniciar")
 botonReiniciar.addEventListener("click", reiniciarJuego)
 
 
@@ -32,23 +52,14 @@ botonReiniciar.addEventListener("click", reiniciarJuego)
 function seleccionarMascotaJugador() {
 
     //la eleccion de mascota se oculta luego de elegir la mascota
-    let sectionSeleccionarMascota = document.getElementById("seleccionar-mascota")
     sectionSeleccionarMascota.style.display = "none"
 
     //La eleccion de ataque aperece luego de elegir la mascota
-    let sectionSeleccionarAtaque = document.getElementById("seleccionar-ataque")
-    sectionSeleccionarAtaque.style.display = "block"
+    sectionSeleccionarAtaque.style.display = "flex"
 
     //Declaracion de variables
     let jugar = 1
-    let inputHipodoge = document.getElementById("hipodoge")
-    let inputCapipepo = document.getElementById("capipepo")
-    let inputRatigueya = document.getElementById("ratigueya")
-    let inputLangostelvis = document.getElementById("langostelvis")
-    let inputTucapalma = document.getElementById("tucapalma")
-    let inputPydos = document.getElementById("pydos")
-    let spanMascotaJugador = document.getElementById("mascota-jugador")
-
+    
     //Comprueba la seleccion y cambia el DOM con la mascota selecionada
     if (inputHipodoge.checked) {
         spanMascotaJugador.innerHTML = "Hipodoge";
@@ -67,7 +78,6 @@ function seleccionarMascotaJugador() {
         jugar = 0 //La pc no hara seleccion de mascota hasta que el jugador lo haga
         reiniciarJuego()
     }
-
     /*Esta condicion solo se cumple si el jugador selecciono una mascota, si es asi
       la PC seleccionara su mascota y comenzara el juego*/
     if (jugar == 1) {
@@ -81,8 +91,7 @@ function seleccionarMascotaJugador() {
 function seleccionarMascotaEnemigo() {
 
     let mascotaAleatorio = aleatorio(1, 6)
-    let spanMascotaEnemigo = document.getElementById("mascota-enemigo")
-
+    
     if (mascotaAleatorio == 1) {
         spanMascotaEnemigo.innerHTML = "Hipodoge"
     } else if (mascotaAleatorio == 2) {
@@ -133,8 +142,6 @@ function ataqueAleatorioEnemigo() {
 
 //se crea la logica para obtener el resultado del combate, restando las vidas de los participantes segun corresponda
 function combate() {
-    let spanVidasJugador = document.getElementById("vidas-jugador")
-    let spanVidasEnemigo = document.getElementById("vidas-enemigo")
 
     if (ataqueEnemigo == ataqueJugador) {
         crearMensaje("EMPATE")
@@ -162,35 +169,31 @@ function revisarVidas() {
 
 //Una vez que se tiene el ataque del jugador y el enemigo se muestra un mensaje con el resultado de si gano o no
 function crearMensaje(resultado) {
-    let sectionMensajes = document.getElementById("mensajes")
+     
+    let nuevoAtaqueDelJugador = document.createElement('p')
+    let nuevoAtaqueDelEnemigo = document.createElement('p')
 
-    let parrafo = document.createElement("p")
-    parrafo.innerHTML = "Tu mascota atacó con " + ataqueJugador + ", la mascota del enemigo atacó con " + ataqueEnemigo + "- " + resultado
+    sectionMensajes.innerHTML = resultado
+    nuevoAtaqueDelJugador.innerHTML = ataqueJugador
+    nuevoAtaqueDelEnemigo.innerHTML = ataqueEnemigo
 
-    sectionMensajes.appendChild(parrafo)
+    ataquesDelJugador.appendChild(nuevoAtaqueDelJugador)
+    ataquesDelEnemigo.appendChild(nuevoAtaqueDelEnemigo)
 }
 
 //funcion que muestra el resultado final del combate en pantalla 
 function crearMensajeFinal(resultadoFinal) {
-    let sectionMensajes = document.getElementById("mensajes")
-    
-    let parrafo = document.createElement("p")
-    parrafo.innerHTML = resultadoFinal
 
-    sectionMensajes.appendChild(parrafo)
+    sectionMensajes.innerHTML = resultadoFinal
 
     /*Una vez que las vidas del jugador o del pc lleguen a 0, 
     se desabilitan con disabled los botones de ataques para poner fin al juego*/
-    let botonFuego = document.getElementById("boton-fuego")
-    botonFuego.disabled = true
-    let botonAgua = document.getElementById("boton-agua")
-    botonAgua.disabled = true
-    let botonTierra = document.getElementById("boton-tierra")
+    botonFuego.disabled = true   
+    botonAgua.disabled = true 
     botonTierra.disabled = true
 
     //El boton de reiniciar aperece luego del mensaje final
-    let sectionReiniciar = document.getElementById("reiniciar")
-    sectionReiniciar.style.display = "block"
+    sectionReiniciar.style.display = 'block'
 }
 
 /*Se uso el metodo location.reload para recargar la pagina para volver al html inicial 
