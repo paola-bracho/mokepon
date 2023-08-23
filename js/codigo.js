@@ -2,7 +2,7 @@ const sectionSeleccionarAtaque = document.getElementById('seleccionar-ataque')
 const sectionReiniciar = document.getElementById('reiniciar')
 const botonMascotaJugador = document.getElementById('boton-mascota')
 const botonReiniciar = document.getElementById('boton-reiniciar')
-sectionReiniciar.style.display = 'none'
+sectionReiniciar.style.display = 'none' 
 
 const sectionSeleccionarMascota = document.getElementById('seleccionar-mascota')
 const spanMascotaJugador = document.getElementById('mascota-jugador')
@@ -39,6 +39,7 @@ let victoriasEnemigo = 0
 let vidasJugador = 3
 let vidasEnemigo = 3
 
+// clase constructora de mokepones
 class Mokepon {
     constructor(nombre, foto, vida) {
         this.nombre = nombre
@@ -52,6 +53,7 @@ let hipodoge = new Mokepon ("Hipodoge", "./img/hipodoge.png", 3)
 let capipepo = new Mokepon ("Capipepo", "./img/capipepo.png", 3)
 let ratigueya = new Mokepon ("Ratigueya", "./img/ratigueya.png", 3)
 
+// seccion de ataques de cada personaje
 hipodoge.ataques.push(
     { nombre: '💧', id: 'boton-agua' },
     { nombre: '💧', id: 'boton-agua' },
@@ -80,7 +82,7 @@ ratigueya.ataques.push(
 mokepones.push(hipodoge,capipepo,ratigueya)
 
 function iniciarJuego() {
-    
+    //Se uso display none para ocultar la seleccion de ataques hasta que se seleccione la mascota
     sectionSeleccionarAtaque.style.display = 'none'
 
     mokepones.forEach((mokepon) => {
@@ -101,43 +103,44 @@ function iniciarJuego() {
     
     botonMascotaJugador.addEventListener('click', seleccionarMascotaJugador)
 
-    
-    
-
-    
     botonReiniciar.addEventListener('click', reiniciarJuego)
 }
 
 function seleccionarMascotaJugador() {
     
-    sectionSeleccionarMascota.style.display = 'none'
+    sectionSeleccionarMascota.style.display = 'none'   
     
+    sectionSeleccionarAtaque.style.display = 'flex'   
     
-    sectionSeleccionarAtaque.style.display = 'flex'
-    
-    
-    
+    //Comprueba la seleccion y cambia el DOM con la mascota selecionada
     if (inputHipodoge.checked) {
         spanMascotaJugador.innerHTML = inputHipodoge.id
         mascotaJugador = inputHipodoge.id
+        extraerAtaques(mascotaJugador)
+        seleccionarMascotaEnemigo()
     } else if (inputCapipepo.checked) {
         spanMascotaJugador.innerHTML = inputCapipepo.id
         mascotaJugador = inputCapipepo.id
+        extraerAtaques(mascotaJugador)
+        seleccionarMascotaEnemigo()
     } else if (inputRatigueya.checked) {
         spanMascotaJugador.innerHTML = inputRatigueya.id
         mascotaJugador = inputRatigueya.id
+        extraerAtaques(mascotaJugador)
+        seleccionarMascotaEnemigo()
     } else {
         Swal.fire({
             title: '¡Error!',
             text: 'Selecciona una mascota',
             icon: 'error',
             confirmButtonText: 'aceptar'
+          }).then((result) => {
+            if (result.isConfirmed) {
+                reiniciarJuego()
+            }
           })
-          reiniciarJuego()
+          
     }
-
-    extraerAtaques(mascotaJugador)
-    seleccionarMascotaEnemigo()
 }
 
 function extraerAtaques(mascotaJugador) {
@@ -165,6 +168,7 @@ function mostrarAtaques(ataques) {
      botones = document.querySelectorAll('.BAtaque')
 }
 
+//funcion de eleccion de ataques del jugador
 function secuenciaAtaque() {
 
     botones.forEach((boton) => {
@@ -172,17 +176,17 @@ function secuenciaAtaque() {
             if (e.target.textContent === '🔥') {
                 ataqueJugador.push('FUEGO')
                 console.log(ataqueJugador)
-                boton.style.background = '#112f58' 
+                boton.style.background = '#35A29F' 
                 boton.disabled = true  
             } else if (e.target.textContent === '💧') {
                 ataqueJugador.push('AGUA')
                 console.log(ataqueJugador)
-                boton.style.background = '#112f58'
+                boton.style.background = '#35A29F'
                 boton.disabled = true
             } else {
                 ataqueJugador.push('TIERRA')
                 console.log(ataqueJugador)
-                boton.style.background = '#112f58'
+                boton.style.background = '#35A29F'
                 boton.disabled = true
             }
             ataqueAleatorioEnemigo()
@@ -197,7 +201,6 @@ function seleccionarMascotaEnemigo() {
     ataquesMokeponEnemigo = mokepones[mascotaAleatoria].ataques
     secuenciaAtaque()
 }
-
 
 function ataqueAleatorioEnemigo() {
     let ataqueAleatorio = aleatorio(0,ataquesMokeponEnemigo.length -1)
@@ -224,6 +227,7 @@ function indexAmbosOponente(jugador, enemigo) {
     indexAtaqueEnemigo = ataqueEnemigo[enemigo]
 }
 
+//se crea la logica para obtener el resultado del combate, sumando las victorias de los participantes segun corresponda
 function combate() {
     
     for (let index = 0; index < ataqueJugador.length; index++) {
@@ -252,9 +256,11 @@ function combate() {
             spanVidasEnemigo.innerHTML = victoriasEnemigo
         }
     }
+    //cuando el combate termina, se llama la funcion revisarVidas que muestra el mensaje final de victoria o derrota
     revisarVidas()
 }
 
+//una vez que se han realizado los 5 ataques posibles, se muestra un mensaje con el resultado final del combate
 function revisarVidas() {
     if (victoriasJugador === victoriasEnemigo) {
         crearMensajeFinal("¡¡EMPATE!!")
@@ -265,8 +271,8 @@ function revisarVidas() {
     }
 }
 
-function crearMensaje(resultado) {
-    
+//Una vez que se tiene el ataque del jugador y el enemigo se muestra un mensaje con el resultado de si gano o no
+function crearMensaje(resultado) {    
     
     let nuevoAtaqueDelJugador = document.createElement('p')
     let nuevoAtaqueDelEnemigo = document.createElement('p')
@@ -279,18 +285,22 @@ function crearMensaje(resultado) {
     ataquesDelEnemigo.appendChild(nuevoAtaqueDelEnemigo)
 }
 
+//funcion que muestra el resultado final del combate en pantalla 
 function crearMensajeFinal(resultadoFinal) {
-    
-    
+   
     sectionMensajes.innerHTML = resultadoFinal
 
+    //El boton de reiniciar aperece luego del mensaje final
     sectionReiniciar.style.display = 'block'
 }
 
+/*Se uso el metodo location.reload para recargar la pagina para volver al html inicial 
+y volver a selecionar las mascotas y ataques cuando se pulse el boton reiniciar*/
 function reiniciarJuego() {
     location.reload()
 }
 
+//Funcion numero aleatorio para seleccion de mascota y ataque del pc
 function aleatorio(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min)
 }
